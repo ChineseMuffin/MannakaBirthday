@@ -74,7 +74,9 @@ class MannakaBirthday:
             def calibed_next_date(year: int, birthday: Birthday) -> date:
                 if birthday.is_intercalary():
                     return date(year, 3, 1)
-                return date(year, birthday.month, birthday.day + 1)
+                return date(year, birthday.month, birthday.day) + timedelta(
+                    has_intercalary
+                )
 
             date1, date2 = (
                 calibed_next_date(y, b) for y, b in zip(self._years, self._birthdays)

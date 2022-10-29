@@ -25,7 +25,7 @@ class Test(unittest.TestCase):
             m = m.previous()
 
     def test_intercalary(self):
-        birthday1 = Birthday(2, 29)
+        birthday1 = Birthday(2, 28)
         birthday2 = Birthday(2, 29)
 
         m = MannakaBirthday(birthday1, birthday2, 2000, 2000)
@@ -46,12 +46,19 @@ class Test(unittest.TestCase):
         today = date(2022, 10, 29)
         m = MannakaBirthday(birthday1, birthday2, 2000, 2000)
 
+        expect = iter((date(2000, 2, 29), date(2023, 2, 28), date(2022, 8, 30)))
+
         md = m.mannaka_date()
         print(md)
+        self.assertEqual(md, next(expect))
+
         md = m.next(today).mannaka_date()
         print(md)
+        self.assertEqual(md, next(expect))
+
         md = m.previous(today).mannaka_date()
         print(md)
+        self.assertEqual(md, next(expect))
 
     def test_simple(self):
         hanamaru = Birthday(3, 4)
