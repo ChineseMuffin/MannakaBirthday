@@ -13,7 +13,7 @@ def mannaka_birthday(birthday1: Birthday, birthday2: Birthday) -> Birthday:
 
     def calib_date(birthday: Birthday) -> date:
         is_hayaumare = 1 <= birthday.month <= 3
-        return date(NON_LEAP_YEAR + is_hayaumare, **birthday.__dict__)
+        return date(NON_LEAP_YEAR + is_hayaumare, birthday.month, birthday.day)
 
     date1, date2 = sorted(map(calib_date, (birthday1, birthday2)))
     delta = date2 - date1
