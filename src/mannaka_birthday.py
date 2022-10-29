@@ -7,14 +7,23 @@ from datetime import date, timedelta
 
 
 class MannakaBirthday:
-    def __init__(self, birthday1, birthday2):
+    INTERCALARY_CALIB = timedelta(1)
+
+    def __init__(self, birthday1: date, birthday2: date):
 
         assert 0 <= (birthday2 - birthday1).days <= 366
+
+        self._intercalary = False
 
         self._birthday1 = birthday1
         self._birthday2 = birthday2
 
-        self._mannaka_date = self.mannaka_date()
+        if (birthday1.day == 29 and birthday1.month == 2) or (
+            birthday2.day == 29 and birthday2.month == 2
+        ):
+            self._intercalary = True
+            self._birthday1 = birthday1 + MannakaBirthday.INTERCALARY_CALIB
+            self._birthday2 = birthday2 + MannakaBirthday.INTERCALARY_CALIB
 
     def next(self) -> "MannakaBirthday":
         birthday1_year = self._birthday1.year
@@ -32,4 +41,7 @@ class MannakaBirthday:
         date1 = self._birthday1
         date2 = self._birthday2
         delta = date2 - date1
-        return date1 + timedelta(delta.days / 2)
+        mannaka = date1 + timedelta(delta.days / 2)
+        if self._intercalary:
+            mannaka -= MannakaBirthday.INTERCALARY_CALIB
+        return mannaka
