@@ -8,6 +8,7 @@ from simple_mannaka_birthday import (
 
 class MannakaBirthday:
     MAX_ITERATION = 4000
+    CALIB = timedelta(1)
 
     def __init__(
         self, birthday1: Birthday, birthday2: Birthday, year1: int, year2: int
@@ -31,14 +32,14 @@ class MannakaBirthday:
 
         if delta_days > 0:
             m_next = m
-            for _ in range(MannakaBirthday.MAX_ITERATION):
+            for _ in range(self.MAX_ITERATION):
                 if m.mannaka_date() < target:
                     return m_next
                 m_next = m
                 m = m._previous_base()
 
         if delta_days < 0:
-            for _ in range(MannakaBirthday.MAX_ITERATION):
+            for _ in range(self.MAX_ITERATION):
                 if m.mannaka_date() > target:
                     return m
                 m = m._next_base()
@@ -52,31 +53,26 @@ class MannakaBirthday:
         return self.next(target)._previous_base()
 
     def mannaka_date(self) -> date:
-        calib = timedelta(1)
-
-        def calibed_next_date(year: int, birthday: Birthday) -> date:
-            if is_intercalary(birthday):
-                return date(year, 3, 1)
-            return date(year, birthday.month, birthday.day) + calib
-
         date1, date2 = (
-            calibed_next_date(y, b) for y, b in zip(self._years, self._birthdays)
+            self.calibed_next_date(y, b) for y, b in zip(self._years, self._birthdays)
         )
 
         delta = date2 - date1
-        mannaka = date1 + timedelta(delta.days / 2) - calib
+        mannaka = date1 + timedelta(delta.days / 2) - self.CALIB
 
         return mannaka
 
+    @classmethod
+    def calibed_next_date(cls, year: int, birthday: Birthday) -> date:
+        if is_intercalary(birthday):
+            return date(year, 3, 1)
+        return date(year, birthday.month, birthday.day) + cls.CALIB
+
     def _next_base(self) -> "MannakaBirthday":
-        return MannakaBirthday(
-            self._birthdays[1], self._birthdays[0], self._years[1], self._years[0] + 1
-        )
+        return MannakaBirthday(*self._birthdays, self._years[1], self._years[0] + 1)
 
     def _previous_base(self) -> "MannakaBirthday":
-        return MannakaBirthday(
-            self._birthdays[1], self._birthdays[0], self._years[1] - 1, self._years[0]
-        )
+        return MannakaBirthday(*self._birthdays, self._years[1] - 1, self._years[0])
 
 
 class SimpleMannakaBirthday:
