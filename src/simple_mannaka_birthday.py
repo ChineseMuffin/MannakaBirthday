@@ -9,11 +9,11 @@ class Birthday:
 
 
 def mannaka_birthday(birthday1: Birthday, birthday2: Birthday) -> Birthday:
-    NON_INTERCALARY_YEAR = 2001
+    NON_LEAP_YEAR = 2001  # the next year is also not a leap year
 
     def calib_date(birthday: Birthday) -> date:
         is_hayaumare = 1 <= birthday.month <= 3
-        return date(NON_INTERCALARY_YEAR + is_hayaumare, **birthday.__dict__)
+        return date(NON_LEAP_YEAR + is_hayaumare, **birthday.__dict__)
 
     date1, date2 = sorted(map(calib_date, (birthday1, birthday2)))
     delta = date2 - date1
