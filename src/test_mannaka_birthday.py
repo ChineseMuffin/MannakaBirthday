@@ -1,7 +1,7 @@
 import unittest
 from datetime import date, timedelta
 
-from mannaka_birthday import Birthday, MannakaBirthday
+from mannaka_birthday import Birthday, MannakaBirthday, SimpleMannakaBirthday
 
 
 class Test(unittest.TestCase):
@@ -52,6 +52,19 @@ class Test(unittest.TestCase):
         print(md)
         md = m.previous(today).mannaka_date()
         print(md)
+
+    def test_simple(self):
+        hanamaru = Birthday(3, 4)
+        mari = Birthday(6, 13)
+        year = 2000
+
+        expect = date(year, 10, 23)
+
+        m = SimpleMannakaBirthday(hanamaru, mari, year, year)
+        md = m.mannaka_date()
+
+        print(md)
+        self.assertEqual(md, expect)
 
 
 if __name__ == "__main__":
