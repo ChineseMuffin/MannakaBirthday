@@ -1,7 +1,8 @@
 import unittest
 from datetime import date
 
-from mannaka_birthday import Birthday, MannakaBirthday, SimpleMannakaBirthday
+from mannaka_birthday import Birthday, MannakaBirthday
+from simple_mannaka_birthday import SimpleMannakaBirthday
 
 
 class Test(unittest.TestCase):
@@ -22,7 +23,7 @@ class Test(unittest.TestCase):
         for i in range(5):
             mannaka = m.to_date()
             print(i, mannaka)
-            m = m.previous()
+            m = m.prev()
 
     def test_intercalary(self):
         birthday1 = Birthday(2, 28, 2000)
@@ -38,7 +39,7 @@ class Test(unittest.TestCase):
         for i in range(5):
             mannaka = m.to_date()
             print(i, mannaka)
-            m = m.previous()
+            m = m.prev()
 
     def test_next_previous_past(self):
         birthday1 = Birthday(2, 28, 2000)
@@ -52,7 +53,7 @@ class Test(unittest.TestCase):
         print(md)
         self.assertEqual(md, next(expect))
 
-        md = m.previous(today).to_date()
+        md = m.prev(today).to_date()
         print(md)
         self.assertEqual(md, next(expect))
 
@@ -68,7 +69,7 @@ class Test(unittest.TestCase):
         print(md)
         self.assertEqual(md, next(expect))
 
-        md = m.previous(today).to_date()
+        md = m.prev(today).to_date()
         print(md)
         self.assertEqual(md, next(expect))
 
@@ -79,7 +80,7 @@ class Test(unittest.TestCase):
 
         expect = date(year, 10, 23)
 
-        m = SimpleMannakaBirthday(hanamaru, mari)
+        m = SimpleMannakaBirthday(hanamaru, mari, year)
         md = m.to_date()
 
         print(md)
