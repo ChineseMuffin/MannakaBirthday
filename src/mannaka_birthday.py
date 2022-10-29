@@ -31,7 +31,7 @@ class MannakaBirthday(BirthdayBase):
     def __init__(self, birthday1: BirthdayBase, birthday2: BirthdayBase):
         self._birthdays = (birthday1, birthday2)
 
-        date1, date2 = (b.to_date() for b in self._birthdays)
+        assert (date1 := birthday1.to_date()) and (date2 := birthday2.to_date())
         assert 0 <= (date2 - date1).days <= 366 * 2
 
     def to_date(self) -> date:
