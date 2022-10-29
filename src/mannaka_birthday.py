@@ -15,6 +15,12 @@ class Birthday(SimpleBirthday):
     def to_date(self) -> date:
         return self._calibed_next_date() - self.CALIB
 
+    def next(self) -> "Birthday":
+        return Birthday(self.month, self.day, self.year + 1)
+
+    def previous(self) -> "Birthday":
+        return Birthday(self.month, self.day, self.year - 1)
+
     def _is_intercalary(self) -> bool:
         return self.day == 29 and self.month == 2
 
@@ -26,7 +32,6 @@ class Birthday(SimpleBirthday):
 
 class MannakaBirthday:
     def __init__(self, birthday1: Birthday, birthday2: Birthday):
-
         self._birthdays = (birthday1, birthday2)
 
         date1, date2 = (b.to_date() for b in self._birthdays)
@@ -36,9 +41,8 @@ class MannakaBirthday:
         date1, date2 = (b.to_date() for b in self._birthdays)
 
         delta = date2 - date1
-        mannaka = date1 + timedelta(delta.days / 2)
 
-        return mannaka
+        return date1 + timedelta(delta.days / 2)
 
     def next(self, target: date | None = None) -> "MannakaBirthday":
         if target is None:
@@ -75,18 +79,17 @@ class MannakaBirthday:
 
     def _next_base(self) -> "MannakaBirthday":
         b1, b2 = self._birthdays
-        return MannakaBirthday(b2, Birthday(b1.month, b1.day, b1.year + 1))
+        return MannakaBirthday(b2, b1.next())
 
     def _previous_base(self) -> "MannakaBirthday":
         b1, b2 = self._birthdays
-        return MannakaBirthday(Birthday(b2.month, b2.day, b2.year - 1), b1)
+        return MannakaBirthday(b2.previous(), b1)
 
 
 class SimpleMannakaBirthday:
     def __init__(self, birthday1: Birthday, birthday2: Birthday):
-        self._year1 = birthday1.year
         self._birthdays = birthday1, birthday2
 
     def to_date(self) -> date:
         mb = simple_mannaka_birthday(*self._birthdays)
-        return date(self._year1, mb.month, mb.day)
+        return date(self._birthdays[0].year, mb.month, mb.day)
