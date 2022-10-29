@@ -16,13 +16,13 @@ class Test(unittest.TestCase):
 
         for i in range(10):
             mannaka = m.mannaka_date()
-            m = m.next()
             print(i, mannaka)
+            m = m.next()
 
         for i in range(5):
             mannaka = m.mannaka_date()
-            m = m.previous()
             print(i, mannaka)
+            m = m.previous()
 
     def test_intercalary(self):
         birthday1 = Birthday(2, 29)
@@ -32,13 +32,13 @@ class Test(unittest.TestCase):
 
         for i in range(10):
             mannaka = m.mannaka_date()
-            m = m.next()
             print(i, mannaka)
+            m = m.next()
 
         for i in range(5):
             mannaka = m.mannaka_date()
-            m = m.previous()
             print(i, mannaka)
+            m = m.previous()
 
     def test_next_previous(self):
         birthday1 = Birthday(3, 1)

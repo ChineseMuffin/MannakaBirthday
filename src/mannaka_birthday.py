@@ -64,18 +64,14 @@ class MannakaBirthday:
         )
 
         if has_intercalary:
-            if self._birthday1.is_intercalary():
-                date1 = date(self._year1, 3, 1)
-            else:
-                date1 = date(
-                    self._year1, self._birthday1.month, self._birthday1.day + 1
-                )
-            if self._birthday2.is_intercalary():
-                date2 = date(self._year2, 3, 1)
-            else:
-                date2 = date(
-                    self._year2, self._birthday2.month, self._birthday2.day + 1
-                )
+
+            def calibed_next_date(year: int, birthday: Birthday) -> date:
+                if birthday.is_intercalary():
+                    return date(year, 3, 1)
+                return date(year, birthday.month, birthday.day + 1)
+
+            date1 = calibed_next_date(self._year1, self._birthday1)
+            date2 = calibed_next_date(self._year2, self._birthday2)
         else:
             date1 = date(self._year1, self._birthday1.month, self._birthday1.day)
             date2 = date(self._year2, self._birthday2.month, self._birthday2.day)
