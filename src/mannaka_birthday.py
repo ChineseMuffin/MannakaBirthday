@@ -19,11 +19,9 @@ class MannakaBirthday:
     ):
         assert year1 <= year2
 
-        self._year1 = year1
-        self._year2 = year2
+        self._years = (year1, year2)
 
-        self._birthday1 = birthday1
-        self._birthday2 = birthday2
+        self._birthdays = (birthday1, birthday2)
 
     def next(self, target: date | None = None) -> "MannakaBirthday":
         if target is None:
@@ -59,9 +57,7 @@ class MannakaBirthday:
         return self.next(target)._previous_base()
 
     def mannaka_date(self) -> date:
-        has_intercalary = (
-            self._birthday1.is_intercalary() or self._birthday2.is_intercalary()
-        )
+        has_intercalary = any(b.is_intercalary() for b in self._birthdays)
 
         if has_intercalary:
 
@@ -70,11 +66,14 @@ class MannakaBirthday:
                     return date(year, 3, 1)
                 return date(year, birthday.month, birthday.day + 1)
 
-            date1 = calibed_next_date(self._year1, self._birthday1)
-            date2 = calibed_next_date(self._year2, self._birthday2)
+            date1, date2 = (
+                calibed_next_date(y, b) for y, b in zip(self._years, self._birthdays)
+            )
+
         else:
-            date1 = date(self._year1, self._birthday1.month, self._birthday1.day)
-            date2 = date(self._year2, self._birthday2.month, self._birthday2.day)
+            date1, date2 = (
+                date(y, b.month, b.day) for y, b in zip(self._years, self._birthdays)
+            )
 
         delta = date2 - date1
         mannaka = date1 + timedelta(delta.days / 2) - timedelta(has_intercalary)
@@ -83,10 +82,10 @@ class MannakaBirthday:
 
     def _next_base(self) -> "MannakaBirthday":
         return MannakaBirthday(
-            self._birthday2, self._birthday1, self._year2, self._year1 + 1
+            self._birthdays[1], self._birthdays[0], self._years[1], self._years[0] + 1
         )
 
     def _previous_base(self) -> "MannakaBirthday":
         return MannakaBirthday(
-            self._birthday2, self._birthday1, self._year2 - 1, self._year1
+            self._birthdays[1], self._birthdays[0], self._years[1] - 1, self._years[0]
         )
