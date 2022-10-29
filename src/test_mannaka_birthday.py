@@ -9,8 +9,8 @@ class Test(unittest.TestCase):
         return super().setUp()
 
     def test_1(self):
-        birthday1 = Birthday(3, 1)
-        birthday2 = Birthday(2, 28)
+        birthday1 = Birthday(2, 28)
+        birthday2 = Birthday(3, 1)
 
         m = MannakaBirthday(birthday1, birthday2, 2000, 2000)
 
@@ -41,8 +41,8 @@ class Test(unittest.TestCase):
             m = m.previous()
 
     def test_next_previous_past(self):
-        birthday1 = Birthday(3, 1)
-        birthday2 = Birthday(2, 28)
+        birthday1 = Birthday(2, 28)
+        birthday2 = Birthday(3, 1)
         today = date(2022, 10, 29)
         m = MannakaBirthday(birthday1, birthday2, 2000, 2000)
 
@@ -57,8 +57,8 @@ class Test(unittest.TestCase):
         self.assertEqual(md, next(expect))
 
     def test_next_previous_future(self):
-        birthday1 = Birthday(3, 1)
-        birthday2 = Birthday(2, 28)
+        birthday1 = Birthday(2, 28)
+        birthday2 = Birthday(3, 1)
         today = date(2022, 10, 29)
         m = MannakaBirthday(birthday1, birthday2, 2100, 2100)
 

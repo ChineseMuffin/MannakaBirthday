@@ -12,11 +12,15 @@ class MannakaBirthday:
     def __init__(
         self, birthday1: Birthday, birthday2: Birthday, year1: int, year2: int
     ):
-        assert year1 <= year2
 
         self._years = (year1, year2)
 
         self._birthdays = (birthday1, birthday2)
+
+        date1, date2 = (
+            self.calibed_next_date(y, b) for y, b in zip(self._years, self._birthdays)
+        )
+        assert 0 <= (date2 - date1).days <= 366 * 2
 
     def next(self, target: date | None = None) -> "MannakaBirthday":
         if target is None:
