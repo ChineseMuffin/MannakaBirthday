@@ -1,24 +1,9 @@
 from datetime import date, timedelta
-from dataclasses import dataclass
 
-import simple_mannaka_birthday
-
-
-class Birthday(simple_mannaka_birthday.Birthday):
-    def is_intercalary(self):
-        return self.day == 29 and self.month == 2
-
-
-class SimpleMannakaBirthday:
-    def __init__(
-        self, birthday1: Birthday, birthday2: Birthday, year1: int, year2: int
-    ):
-        self._year1 = year1
-        self._birthdays = birthday1, birthday2
-
-    def mannaka_date(self) -> date:
-        mb = simple_mannaka_birthday.mannaka_birthday(*self._birthdays)
-        return date(self._year1, mb.month, mb.day)
+from simple_mannaka_birthday import (
+    Birthday,
+    mannaka_birthday as simple_mannaka_birthday,
+)
 
 
 class MannakaBirthday:
@@ -70,7 +55,7 @@ class MannakaBirthday:
         calib = timedelta(1)
 
         def calibed_next_date(year: int, birthday: Birthday) -> date:
-            if birthday.is_intercalary():
+            if is_intercalary(birthday):
                 return date(year, 3, 1)
             return date(year, birthday.month, birthday.day) + calib
 
@@ -92,3 +77,19 @@ class MannakaBirthday:
         return MannakaBirthday(
             self._birthdays[1], self._birthdays[0], self._years[1] - 1, self._years[0]
         )
+
+
+class SimpleMannakaBirthday:
+    def __init__(
+        self, birthday1: Birthday, birthday2: Birthday, year1: int, year2: int
+    ):
+        self._year1 = year1
+        self._birthdays = birthday1, birthday2
+
+    def mannaka_date(self) -> date:
+        mb = simple_mannaka_birthday(*self._birthdays)
+        return date(self._year1, mb.month, mb.day)
+
+
+def is_intercalary(birthday: Birthday) -> bool:
+    return birthday.day == 29 and birthday.month == 2
