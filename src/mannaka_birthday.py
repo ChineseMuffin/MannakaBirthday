@@ -1,33 +1,24 @@
 from datetime import date, timedelta
 from dataclasses import dataclass
 
+import simple_mannaka_birthday
 
-@dataclass
-class Birthday:
-    month: int
-    day: int
 
+class Birthday(simple_mannaka_birthday.Birthday):
     def is_intercalary(self):
         return self.day == 29 and self.month == 2
 
 
 class SimpleMannakaBirthday:
-    def __init__(self, birthday1: Birthday, birthday2, year1: int, year2: int):
+    def __init__(
+        self, birthday1: Birthday, birthday2: Birthday, year1: int, year2: int
+    ):
         self._year1 = year1
         self._birthdays = birthday1, birthday2
 
     def mannaka_date(self) -> date:
-        NON_INTERCALARY_YEAR = 2001
-
-        def calib_date(birthday: Birthday) -> date:
-            is_hayaumare = 1 <= birthday.month <= 3
-            return date(
-                NON_INTERCALARY_YEAR + is_hayaumare, birthday.month, birthday.day
-            )
-
-        date1, date2 = sorted(map(calib_date, self._birthdays))
-        delta = date2 - date1
-        return (date1 + timedelta(delta.days / 2)).replace(self._year1)
+        mb = simple_mannaka_birthday.mannaka_birthday(*self._birthdays)
+        return date(self._year1, mb.month, mb.day)
 
 
 class MannakaBirthday:
