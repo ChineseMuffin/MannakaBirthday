@@ -45,16 +45,16 @@ class MannakaBirthday:
             return m
 
         if delta_days > 0:
+            m_next = m
             for _ in range(MannakaBirthday.MAX_ITERATION):
-                is_past = m.mannaka_date() < target
-                if is_past:
-                    return m._next_base()
-                m = m.previous()
+                if m.mannaka_date() < target:
+                    return m_next
+                m_next = m
+                m = m._previous_base()
 
         if delta_days < 0:
             for _ in range(MannakaBirthday.MAX_ITERATION):
-                is_future = m.mannaka_date() > target
-                if is_future:
+                if m.mannaka_date() > target:
                     return m
                 m = m._next_base()
 

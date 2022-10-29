@@ -40,17 +40,29 @@ class Test(unittest.TestCase):
             print(i, mannaka)
             m = m.previous()
 
-    def test_next_previous(self):
+    def test_next_previous_past(self):
         birthday1 = Birthday(3, 1)
         birthday2 = Birthday(2, 28)
         today = date(2022, 10, 29)
         m = MannakaBirthday(birthday1, birthday2, 2000, 2000)
 
-        expect = iter((date(2000, 2, 29), date(2023, 2, 28), date(2022, 8, 30)))
+        expect = iter((date(2023, 2, 28), date(2022, 8, 30)))
 
-        md = m.mannaka_date()
+        md = m.next(today).mannaka_date()
         print(md)
         self.assertEqual(md, next(expect))
+
+        md = m.previous(today).mannaka_date()
+        print(md)
+        self.assertEqual(md, next(expect))
+
+    def test_next_previous_future(self):
+        birthday1 = Birthday(3, 1)
+        birthday2 = Birthday(2, 28)
+        today = date(2022, 10, 29)
+        m = MannakaBirthday(birthday1, birthday2, 2100, 2100)
+
+        expect = iter((date(2023, 2, 28), date(2022, 8, 30)))
 
         md = m.next(today).mannaka_date()
         print(md)
