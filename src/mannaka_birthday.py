@@ -7,7 +7,6 @@ from simple_mannaka_birthday import (
 
 
 class MannakaBirthday:
-    MAX_ITERATION = 4000
     CALIB = timedelta(1)
 
     def __init__(
@@ -32,14 +31,14 @@ class MannakaBirthday:
 
         if delta_days > 0:
             m_next = m
-            for _ in range(self.MAX_ITERATION):
+            for _ in range(abs(delta_days)):
                 if m.mannaka_date() < target:
                     return m_next
                 m_next = m
                 m = m._previous_base()
 
         if delta_days < 0:
-            for _ in range(self.MAX_ITERATION):
+            for _ in range(abs(delta_days)):
                 if m.mannaka_date() > target:
                     return m
                 m = m._next_base()
