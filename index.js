@@ -55,7 +55,10 @@ function nextNextMannakaBirthday(birthday1, birthday2, today) {
         bd1, bd2 = bd2, bd1
     }
     let nextMB = new MannakaBirthday(bd1, bd2)
-    if (today.toDate() - nextMB.toDate() > 0) {
+    while (nextMB.prev().toDate() - today.toDate() >= 0) {
+        nextMB = nextMB.prev()
+    }
+    while (today.toDate() - nextMB.toDate() > 0) {
         nextMB = nextMB.next()
     }
     const nextNextMB = nextMB.next()
